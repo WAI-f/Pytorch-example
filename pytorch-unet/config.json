@@ -1,0 +1,53 @@
+{
+    "name": "UNet_seg",
+    "n_gpu": 1,
+
+    "arch": {
+        "type": "UNetModel",
+        "args": {
+			"in_channels": 3,
+			"n_labels": 5
+			}
+    },
+    "data_loader": {
+        "type": "UNetDataLoader",
+        "args":{
+            "data_dir": "data/",
+            "batch_size": 16,
+            "shuffle": true,
+            "validation_split": 0.1,
+            "num_workers": 4
+        }
+    },
+    "optimizer": {
+        "type": "Adam",
+        "args":{
+            "lr": 0.001,
+            "weight_decay": 0,
+            "amsgrad": false
+        }
+    },
+    "loss": "cel_loss",
+    "metrics": [
+        "accuracy"
+    ],
+    "lr_scheduler": {
+        "type": "StepLR",
+        "args": {
+            "step_size": 50,
+            "gamma": 0.1
+        }
+    },
+    "trainer": {
+        "epochs": 30,
+
+        "save_dir": "saved/",
+        "save_period": 1,
+        "verbosity": 2,
+        
+        "monitor": "min val_loss",
+        "early_stop": 10,
+
+        "tensorboard": true
+    }
+}
